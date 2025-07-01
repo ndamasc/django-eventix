@@ -32,12 +32,12 @@ def cadastro(request):
     if request.method == "POST":
         form = CadastroUsuarioForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             messages.success(request, "Cadastro realizado com sucesso! Agora faça login.")
             return redirect('login')
 
     else:
-            form = CadastroUsuarioForm()
+        form = CadastroUsuarioForm()
     return render(request, 'eventos/cadastro.html', {'form': form})
 
 
@@ -48,20 +48,6 @@ def inscrever(request, evento_id):
     usuario = request.user
 
     inscricao, created = Inscricao.objects.get_or_create(participante=usuario, evento=evento)
-
-    # if not inscrito:
-    #     Inscricao.objects.create(evento=evento, participante=request.user)
-
-    #     send_mail(
-    #         subject='Confirmação de Inscrição - {}'.format(evento.titulo),
-    #         message=f'Olá {usuario.first_name},\n\nVocê se inscreveu no evento "{evento.titulo}" em {evento.data.strftime("%d/%m/%Y %H:%M")}, no local: {evento.local}.\n\nObrigado!',
-    #         from_email=None,
-    #         recipient_list=[usuario.email],
-    #         fail_silently=False,
-    #     )
-
-    #    return render(request, 'eventos/inscricao_confirmada.html', {'evento': evento})
-
 
     if created:
         send_mail(
@@ -84,6 +70,7 @@ def meus_eventos(request):
 def gerar_ingresso(request, id):
     evento = get_object_or_404(Evento, pk=id)
     participante = request.user
+    nome_completo = request.user.perfil.nome_completo
 
     if not Inscricao.objects.filter(participante=participante, evento=evento).exists():
         return HttpResponse('Você não está inscrito nesse evento!', status=403)
@@ -96,7 +83,7 @@ def gerar_ingresso(request, id):
     p.drawString(100, 800, "Ingresso - {}".format(evento.titulo))
 
     p.setFont("Helvetica", 12)
-    p.drawString(100, 770, f"Nome: {participante.get_full_name() or participante.username}")
+    p.drawString(100, 770, f"Nome: {nome_completo}")
     p.drawString(100, 750, f"Email: {participante.email}")
     p.drawString(100, 730, f"Data: {evento.data.strftime('%d/%m/%Y %H:%M')}")
     p.drawString(100, 710, f"Local: {evento.local}")

@@ -2,6 +2,15 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+
+class Perfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nome_completo = models.CharField(max_length=100)
+    telefone = models.CharField(max_length=30, blank=True)
+
+    def __str__(self):
+        return self.nome_completo
+
 class Evento(models.Model):
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
