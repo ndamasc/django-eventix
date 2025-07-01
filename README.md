@@ -22,18 +22,21 @@ Eventix é uma aplicação web desenvolvida com Django que permite que usuários
 
 ## 📸 Interface
 
-![Tela de Cadastro](C:\Users\DELL\Documents\alura-cursos\django\plataforma-eventos\django-eventix\plataforma-eventos\docs\cadastro.png)
-![Tela de Home](C:\Users\DELL\Documents\alura-cursos\django\plataforma-eventos\django-eventix\plataforma-eventos\docs\home.png)
-![Tela de Perfil](C:\Users\DELL\Documents\alura-cursos\django\plataforma-eventos\django-eventix\plataforma-eventos\docs\perfil.png)
-![Tela de Eventos do Usuário](C:\Users\DELL\Documents\alura-cursos\django\plataforma-eventos\django-eventix\plataforma-eventos\docs\meus_eventos.png)
+
+![Tela de cadastro](https://github.com/user-attachments/assets/395d0ad7-5c99-4375-90b3-f12bfa800b21)
+![Tela de home](https://github.com/user-attachments/assets/c689f791-7ba5-4284-a9cb-eed95bed9d8b)
+![Tela de meus_eventos](https://github.com/user-attachments/assets/2ff52e8b-b2d5-4704-bafc-66ff8a2a6d32)
+![Tela de perfil](https://github.com/user-attachments/assets/e33ded36-d1a5-44b4-b46e-1359b84db6f6)
+
+
 
 ## 📦 Como rodar o projeto localmente
 
 1. **Clone o repositório:**
 
 ```python
-git clone https://github.com/seu-usuario/seu-repo.git
-cd seu-repo
+git clone [https://github.com/seu-usuario/seu-repo.git](https://github.com/ndamasc/django-eventix.git)
+cd django-eventix
 ```
 
 2. **Instale as dependencias:**
