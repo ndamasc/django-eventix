@@ -21,3 +21,10 @@ class Inscricao(models.Model):
 
     def __str__(self):
         return f'{self.participante.username} em {self.evento.titulo}'
+    
+
+class Token(models.Model):
+    token = models.CharField(max_length=64, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    evento = models.ForeignKey('Evento', on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now_add=True)

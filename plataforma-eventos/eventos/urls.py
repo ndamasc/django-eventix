@@ -8,5 +8,7 @@ urlpatterns = [
     path('meus-eventos/', views.meus_eventos, name='meus_eventos'),
     path('cadastro/', views.cadastro, name='cadastro'),
     path('evento/<int:id>/ingresso', views.gerar_ingresso, name='gerar_ingresso'),
-    path('evento/<int:id>/cancelar-inscricao/', views.cancelar_inscricao, name='cancelar_inscricao'),   
+    path('evento/<int:id>/solicitar-cancelamento/', views.solicitar_cancelamento, name='solicitar_cancelamento'),
+    path('evento/<int:id>/confirmar-cancelamento/', views.confirmar_cancelamento, name='confirmar_cancelamento'),
+
 ]
