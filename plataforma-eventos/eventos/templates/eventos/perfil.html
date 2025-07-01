@@ -1,0 +1,32 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4">Perfil do Usuário</h2>
+
+        <dl class="row">
+            <dt class="col-sm-3">Nome completo:</dt>
+            <dd class="col-sm-9">{{ request.user.perfil.nome_completo }}</dd>
+
+            <dt class="col-sm-3">E-mail:</dt>
+            <dd class="col-sm-9">{{ request.user.email }}</dd>
+
+            <dt class="col-sm-3">Usuário:</dt>
+            <dd class="col-sm-9">{{ request.user.username }}</dd>
+
+            <dt class="col-sm-3">Telefone:</dt>
+            <dd class="col-sm-9">{{ request.user.perfil.telefone|default:"Não informado" }}</dd>
+
+            <dt class="col-sm-3">Data de cadastro:</dt>
+            <dd class="col-sm-9">{{ request.user.date_joined|date:"d/m/Y H:i" }}</dd>
+        </dl>
+
+        <div class="mt-4">
+            <a href="{% url 'editar_perfil' %}" class="btn btn-primary me-2">Editar Perfil</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

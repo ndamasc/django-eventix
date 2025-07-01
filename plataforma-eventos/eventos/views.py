@@ -2,15 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CadastroUsuarioForm
 from django.contrib import messages
 from django.core.mail import send_mail
-from io import BytesIO
 from .models import Evento, Inscricao, Token
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
 from django.conf import settings
 import hashlib
 import time
 from django.urls import reverse
+from .utils.pdf import gerar_ingresso_pdf
 
 def lista_eventos(request):
     
@@ -60,7 +59,20 @@ def inscrever(request, evento_id):
 
     return redirect('meus_eventos')
 
+def perfil(request):
+    return render(request, 'eventos/perfil.html')
 
+def editar_perfil(request):
+    perfil = request.user.perfil
+    if request.method == 'POST':
+        form = CadastroUsuarioForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')  # aqui é o nome da URL, não o template
+    else:
+        form = CadastroUsuarioForm(instance=perfil)
+    
+    return render(request, 'eventos/editar_perfil.html', {'form': form})
 
 def meus_eventos(request):
     inscricoes = Inscricao.objects.filter(participante=request.user).select_related('evento')
@@ -75,26 +87,8 @@ def gerar_ingresso(request, id):
     if not Inscricao.objects.filter(participante=participante, evento=evento).exists():
         return HttpResponse('Você não está inscrito nesse evento!', status=403)
     
-    buffer = BytesIO()
-    p = canvas.Canvas(buffer)
-
-    # Conteúdo do ingresso
-    p.setFont("Helvetica-Bold", 18)
-    p.drawString(100, 800, "Ingresso - {}".format(evento.titulo))
-
-    p.setFont("Helvetica", 12)
-    p.drawString(100, 770, f"Nome: {nome_completo}")
-    p.drawString(100, 750, f"Email: {participante.email}")
-    p.drawString(100, 730, f"Data: {evento.data.strftime('%d/%m/%Y %H:%M')}")
-    p.drawString(100, 710, f"Local: {evento.local}")
-    p.drawString(100, 690, f"Código: EVT-{evento.id}-USR-{participante.id}")
-    p.drawString(100, 670, "Apresente este ingresso na entrada do evento.")
-
-    p.showPage()
-    p.save()
-
-    buffer.seek(0)
-    return HttpResponse(buffer, content_type='application/pdf')
+    pdf_buffer = gerar_ingresso_pdf(evento, participante, nome_completo)
+    return HttpResponse(pdf_buffer, content_type='application/pdf')
 
 
 def gerar_token_cancelamento(user_id, evento_id):
