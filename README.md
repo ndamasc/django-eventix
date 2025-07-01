@@ -22,14 +22,24 @@ Eventix é uma aplicação web desenvolvida com Django que permite que usuários
 
 ## 📸 Interface
 
-Tela de Cadastro:
+### Tela de Cadastro
 <img src="https://github.com/user-attachments/assets/395d0ad7-5c99-4375-90b3-f12bfa800b21" alt="Tela de cadastro" width="340">
-Tela de Home:
+
+---
+
+### Tela de Home
 <img src="https://github.com/user-attachments/assets/c689f791-7ba5-4284-a9cb-eed95bed9d8b" alt="Tela de home" width="340">
-Aba de eventos:
+
+---
+
+### Aba de Eventos
 <img src="https://github.com/user-attachments/assets/2ff52e8b-b2d5-4704-bafc-66ff8a2a6d32" alt="Tela de meus_eventos" width="340">
-Tela de Perfil:
+
+---
+
+### Tela de Perfil
 <img src="https://github.com/user-attachments/assets/e33ded36-d1a5-44b4-b46e-1359b84db6f6" alt="Tela de perfil" width="340">
+
 
 ## 📦 Como rodar o projeto localmente
 
