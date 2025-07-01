@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import TrocarSenhaView
 from . import views
 
 
@@ -12,5 +13,6 @@ urlpatterns = [
     path('evento/<int:id>/confirmar-cancelamento/', views.confirmar_cancelamento, name='confirmar_cancelamento'),
     path('perfil/', views.perfil, name='perfil'),
     path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+    path('perfil/senha/', TrocarSenhaView.as_view(), name='alterar_senha'),
 
 ]

@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CadastroUsuarioForm
+from .forms import CadastroUsuarioForm, EditarPerfilForm, EditarDadosComplementaresForm
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
-from .models import Evento, Inscricao, Token
+from .models import Evento, Inscricao, Token, Perfil
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
@@ -10,6 +12,11 @@ import hashlib
 import time
 from django.urls import reverse
 from .utils.pdf import gerar_ingresso_pdf
+
+
+class TrocarSenhaView(PasswordChangeView):
+    template_name = 'eventos/alterar_senha.html'
+    success_url = reverse_lazy('perfil')
 
 def lista_eventos(request):
     
@@ -59,20 +66,34 @@ def inscrever(request, evento_id):
 
     return redirect('meus_eventos')
 
+
+
+
 def perfil(request):
     return render(request, 'eventos/perfil.html')
 
+@login_required
 def editar_perfil(request):
-    perfil = request.user.perfil
+
+    user = request.user
+    perfil = user.perfil
+
     if request.method == 'POST':
-        form = CadastroUsuarioForm(request.POST, instance=perfil)
-        if form.is_valid():
-            form.save()
-            return redirect('perfil')  # aqui é o nome da URL, não o template
+
+        form_user = EditarPerfilForm(request.POST, instance=user)
+        form_perfil = EditarDadosComplementaresForm(request.POST, instance=perfil)
+
+        if form_user.is_valid() and form_perfil.is_valid():
+            form_user.save()
+            form_perfil.save()
+
+            messages.success(request, 'Usuário atualizado com sucesso!')
+            return redirect('perfil')
     else:
-        form = CadastroUsuarioForm(instance=perfil)
-    
-    return render(request, 'eventos/editar_perfil.html', {'form': form})
+        form_user = EditarPerfilForm(instance=user)
+        form_perfil = EditarDadosComplementaresForm(instance=perfil)
+
+    return render(request, 'eventos/editar_perfil.html', { 'form_user': form_user, 'form_perfil': form_perfil })
 
 def meus_eventos(request):
     inscricoes = Inscricao.objects.filter(participante=request.user).select_related('evento')
